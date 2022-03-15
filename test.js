@@ -1188,7 +1188,8 @@ experiment('options.logRequestStart', () => {
     stream.pipe(writeStream.obj((data, enc, cb) => {
       expect(data.match(/"req":/g).length).to.equal(1)
 
-      if (data.includes('request completed')) {
+      // If we get to the response log we're done
+      if (data.includes('"responseTime":')) {
         done()
       }
 
