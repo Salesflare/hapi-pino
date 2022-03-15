@@ -38,3 +38,5 @@ profile-*
 # Node.js package-lock file
 package-lock.json
 yarn.lock
+
+.vscode
