@@ -168,15 +168,16 @@ async function register (server, options) {
       }
 
       // If you want `req` to be added either use the default `getChildBindings` or make sure `req` is passed in your custom bindings.
+      const responseTime = (info.completed !== undefined ? info.completed : info.responded) - info.received
       request.logger.info(
         {
           payload: options.logPayload ? request.payload : undefined,
           queryParams: options.logQueryParams ? request.query : undefined,
           tags: options.logRouteTags ? request.route.settings.tags : undefined,
           res: request.raw.res,
-          responseTime: (info.completed !== undefined ? info.completed : info.responded) - info.received
+          responseTime
         },
-        'request completed'
+        `[response] ${request.method} ${request.path} ${request.raw.res.statusCode} (${responseTime}ms)`
       )
     }
   })
@@ -251,7 +252,7 @@ async function register (server, options) {
 
     var logObject
     if (mergeHapiLogData) {
-      if (typeof data === 'string') {
+      if (typeof data === 'string' || typeof data === 'number') {
         data = { [messageKey]: data }
       }
 
